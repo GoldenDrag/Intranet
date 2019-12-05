@@ -1,5 +1,7 @@
 package project;
 
+import java.util.ArrayList;
+
 public class Teacher extends Employee {
 	private double rating;
 	private ArrayList<Course> courses;
@@ -17,6 +19,10 @@ public class Teacher extends Employee {
 	public void rate(int rate) {
 		// TODO Auto-generated method stub
 		rating = (rating + rate) / 2;
+	}
+	public boolean addCourse(Course course) {
+		// TODO Auto-generated method stub
+		return courses.add(course);
 	}
 }
 

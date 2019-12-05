@@ -1,5 +1,7 @@
 package project;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -28,21 +30,27 @@ public class Manager extends Employee {
 		student.getStudentCourses().add(course);
 		registration.remove(student, course);
 	}
+	public void nichtRegistrate(Student student, Course course) {
+		registration.remove(student, course);
+	}
 	/**
 	 * assign courses to teacher
 	 * @param teacher 
 	 * @param course 
 	 * @return 
 	*/
-	public String assignCourse(Teacher teacher, Course course) {
-		course
-	    return null;
+	public boolean assignCourse(Teacher teacher, Course course) {
+		return teacher.addCourse(course);
 	}
-	public String addNews() {
-	    return null;
+	public void addNews(String str) throws IOException {
+		FileWriter fw = new FileWriter("News");
+		fw.write(str);
+		fw.close();
 	}
-	public String createReport() {
-	    return null;
+	public void createReport(String report) throws IOException {
+		FileWriter fw = new FileWriter("report");
+		fw.write(report);
+		fw.close();
 	}
 }
 
