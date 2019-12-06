@@ -83,7 +83,7 @@ public class Admin extends Employee {
 	}
 	public void serialize() {
 		try {
-			fos = new FileOutputStream("admin");
+			fos = new FileOutputStream("admin.txt");
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(this);
 			oos.flush();
@@ -93,9 +93,17 @@ public class Admin extends Employee {
 			e.printStackTrace();
 		}
 	}
+	public HashSet<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(HashSet<User> users) {
+		this.users = users;
+	}
+
 	public void deserialize() {
 		try {
-			fis = new FileInputStream("admin");
+			fis = new FileInputStream("admin.txt");
 			oin = new ObjectInputStream(fis);
 			Admin admin = (Admin)oin.readObject();
 			System.out.println(admin);
@@ -104,7 +112,13 @@ public class Admin extends Employee {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+	public Admin clone() throws CloneNotSupportedException {
+		Admin cloned = (Admin)super.clone();
+		@SuppressWarnings("unchecked")
+		HashSet<User> clone = (HashSet<User>)users.clone();
+		cloned.setUsers(clone);
+		return cloned;
 	}
 }
 

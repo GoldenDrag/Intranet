@@ -6,6 +6,10 @@ public abstract class User implements Comparable<User>, Cloneable, Serializable 
 	private String password;
 	private static final long serialVersionUID = 1L;
 	
+	public User() {
+		this.login = null;
+		this.password = null;
+	}
 	public User(String login, String password) {
 		this.login = login;
 		this.password = password;

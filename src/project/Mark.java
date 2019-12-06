@@ -80,7 +80,7 @@ public class Mark {
 	}
 	public void serialize(){
 		try {
-		FileOutputStream fos = new FileOutputStream("mark");
+		FileOutputStream fos = new FileOutputStream("mark.txt");
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		oos.writeObject(this);
 		oos.close();
@@ -91,7 +91,7 @@ public class Mark {
 	}
 	public void deserialize() {
 		try {
-			FileInputStream fis = new FileInputStream("mark");
+			FileInputStream fis = new FileInputStream("mark.txt");
 			ObjectInputStream oin = new ObjectInputStream(fis);
 			Mark user = (Mark)oin.readObject();
 			System.out.println(user);
@@ -100,5 +100,9 @@ public class Mark {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public Mark clone() throws CloneNotSupportedException {
+		Mark m = (Mark) super.clone();
+		return m;
 	}
 }

@@ -72,7 +72,7 @@ public class Employee extends User{
 	}
 	public void serialize(){
 		try {
-		FileOutputStream fos = new FileOutputStream("employee");
+		FileOutputStream fos = new FileOutputStream("employee.txt");
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		oos.writeObject(this);
 		oos.close();
@@ -83,7 +83,7 @@ public class Employee extends User{
 	}
 	public void deserialize() {
 		try {
-			FileInputStream fis = new FileInputStream("employee");
+			FileInputStream fis = new FileInputStream("employee.txt");
 			ObjectInputStream oin = new ObjectInputStream(fis);
 			Employee user = (Employee)oin.readObject();
 			System.out.println(user);
@@ -92,5 +92,8 @@ public class Employee extends User{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public Employee clone() throws CloneNotSupportedException {
+		return (Employee)super.clone();
 	}
 }

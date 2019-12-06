@@ -5,7 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Map;
+import java.util.HashMap;
 import java.util.Vector;
 
 public class Course {
@@ -15,7 +15,7 @@ public class Course {
 	private String speciality;
 	private int yearOfStudy;
 	private Vector<CourseFile> files;
-	private Map<Student, Mark> marks;
+	private HashMap<Student, Mark> marks;
 
 	public Course(String name, String id, int credits, String speciality, int yearOfStudy) {
 		this.name = name;
@@ -27,11 +27,17 @@ public class Course {
 	public String toString() {
 		return id + " | " + name + " | " + speciality + " | " + credits + " | " + yearOfStudy;
 	}
-	public void getFiles() {
+	public void viewFiles() {
 		for(int i = 0; i < files.size(); ++i) {
 			System.out.println(files.get(i));
 		}
 		if (files.size() == 0) System.out.println("No files yet");
+	}
+	public Vector<CourseFile> getFiles() {
+		return files;
+	}
+	public void setFiles(Vector<CourseFile> files) {
+		this.files = files;
 	}
 	public String getName() {
 		return name;
@@ -63,14 +69,17 @@ public class Course {
 	public void setYearOfStudy(int yearOfStudy) {
 		this.yearOfStudy = yearOfStudy;
 	}
-	public Mark getMarks(Student student) {
-		for (Map.Entry<Student, Mark > entry : marks.entrySet()) {
+	public Mark getMark(Student student) {
+		for (HashMap.Entry<Student, Mark > entry : marks.entrySet()) {
 			if (entry.getKey() == student) return entry.getValue();
 //		     System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 		}
-		return new Mark();
+		return null;
 	}
-	public void setMarks(Map<Student, Mark> marks) {
+	public HashMap<Student, Mark> getMarks() {
+		return marks;
+	}
+	public void setMarks(HashMap<Student, Mark> marks) {
 		this.marks = marks;
 	}
 	@Override
@@ -122,7 +131,7 @@ public class Course {
 	}
 	public void serialize() {
 		try {
-			FileOutputStream fos = new FileOutputStream("course");
+			FileOutputStream fos = new FileOutputStream("course.txt");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(this);
 			oos.flush();
@@ -134,7 +143,7 @@ public class Course {
 	}
 	public void deserialize() {
 		try {
-			FileInputStream fis = new FileInputStream("course");
+			FileInputStream fis = new FileInputStream("course.txt");
 			ObjectInputStream oin = new ObjectInputStream(fis);
 			Course user = (Course)oin.readObject();
 			System.out.println(user);
@@ -143,6 +152,11 @@ public class Course {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+	}
+	@SuppressWarnings("unchecked")
+	public Course clone() throws CloneNotSupportedException {
+		Course cloned = (Course)super.clone();
+		cloned.setMarks((HashMap<Student, Mark>)marks.clone()); 
+		return cloned;
 	}
 }

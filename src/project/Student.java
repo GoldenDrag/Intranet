@@ -52,12 +52,12 @@ public class Student extends User {
 		return teacher.toString();
 	}
 	public Mark viewMarks(Course course) {
-	    return course.getMarks(this);
+	    return course.getMark(this);
 	}
 	public void viewTranscript() {
 		System.out.println("Your transcript:");
 		for (int i = 0; i < studentCourses.size(); ++i) {
-			System.out.println(studentCourses.get(i) + ": " + studentCourses.get(i).getMarks(this));
+			System.out.println(studentCourses.get(i) + ": " + studentCourses.get(i).getMark(this));
 		}
 	}
 	public String rateTeacher(Teacher teacher, int rate) {
@@ -69,7 +69,7 @@ public class Student extends User {
 			FileOutputStream fos = new FileOutputStream("transcript.out");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			for (int i = 0; i < studentCourses.size(); ++i) {
-				oos.writeObject(studentCourses.get(i) + ": " + studentCourses.get(i).getMarks(this));
+				oos.writeObject(studentCourses.get(i) + ": " + studentCourses.get(i).getMark(this));
 			}
 			oos.flush();
 			oos.close();
@@ -80,13 +80,16 @@ public class Student extends User {
 		}
 		System.out.println("Your transcript is ready");
 	}
-	public void registerCourse(Course course, Manager manager) {
-		if(manager.approveRegistration(this, course) == true) {
+	public void registerCourse(Course course, Manager manager) throws NullPointerException, CloneNotSupportedException {
+		if(manager.approveRegistration(this.clone(), course) == true) {
 			studentCourses.add(course);
 			System.out.println("You now registered to course: " + course);
 		} else {
 			System.out.println("You can't register");
 		}
+	}
+	public void registerCourse1(Course course, Manager manager) {
+		manager.approveRegistration1(this, course);
 	}
 	public int compareTo(Student o) {
 		// TODO Auto-generated method stub
@@ -97,7 +100,7 @@ public class Student extends User {
 	public double getAverageMark() {
 		double averageMark = 0;
 		for (int i = 0; i < studentCourses.size(); ++i) {
-			averageMark = averageMark + studentCourses.get(i).getMarks(this).getTotal();
+			averageMark = averageMark + studentCourses.get(i).getMark(this).getTotal();
 		}
 		return averageMark/studentCourses.size();
 	}
@@ -119,7 +122,7 @@ public class Student extends User {
 	}
 	public void serialize(){
 		try {
-		FileOutputStream fos = new FileOutputStream("student");
+		FileOutputStream fos = new FileOutputStream("student.txt");
 		ObjectOutputStream oos = new ObjectOutputStream(fos);
 		oos.writeObject(this);
 		oos.close();
@@ -130,7 +133,7 @@ public class Student extends User {
 	}
 	public void deserialize() {
 		try {
-			FileInputStream fis = new FileInputStream("student");
+			FileInputStream fis = new FileInputStream("student.txt");
 			ObjectInputStream oin = new ObjectInputStream(fis);
 			Student user = (Student)oin.readObject();
 			System.out.println(user);
@@ -139,6 +142,12 @@ public class Student extends User {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	@SuppressWarnings("unchecked")
+	public Student clone() throws CloneNotSupportedException {
+		Student cloned = (Student)super.clone();
+		cloned.setStudentCourses((Vector<Course>) studentCourses.clone());
+		return cloned;
 	}
 }
 
